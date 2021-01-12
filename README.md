@@ -1,93 +1,122 @@
 # resumo-http
-Resumo baseado no curso Alura "HTTP: Entendendo a web por baixo dos panos"
+Este resumo foi baseado em:
 
-Itens tratados no curso:
+1. Curso Alura _"HTTP: Entendendo a web por baixo dos panos"_;
+2. 
 
-- A Web Segura (HTTP e HTTPs)
-- Endereços, Domínios e Portas
-- Sessões, Cookies e Servidores
-- Parâmetros de Requisição e Resposta
-- Serviços REST (verbos usados pelo HTTP)
-- Última versão do HTTP
+| Assuntos abordados no resumo                                 |
+| ------------------------------------------------------------ |
+| O que é HTTP;                                                |
+| Como funciona o transporte seguro de informações na web;     |
+| Endereços e sua composição: protocolo, domínio, porta e recurso; |
+| A relação entre domínio de um site e seu endereço de IP;     |
+|                                                              |
+|                                                              |
+|                                                              |
+|                                                              |
+|                                                              |
 
-# Sumário
-○ [Introdução](#Introdução)
+<img src="./assets/1-notes.gif" width="30%">
 
-○ [HTTP e HTTPS](#HTTP-e-HTTPS)
+## Sumário
 
-○ [Endereços Domínios Portas e Recursos](#Endereços-Domínios-e-Portas)</br>
-° [Endereços e Domínios](#Endereços-e-Domínios)</br>
-° [Portas](#Portas)</br>
-° [Recursos](#Portas)
+- [Introdução](#Introdução)
 
-# Introdução
+- [O que é HTTP](#O-que-é-HTTP)
+
+  - [Exemplo prático de como funciona o HTTP](#Exemplo-prático-de-como-funciona-o-HTTP)
+
+  - [HTTP e HTTPS](#HTTP-e-HTTPS) 
+    - [Como funciona a comunicação segura](#Como-funciona-a-comunicação-segura)
+      - [Comunicação segura via criptografia assimétrica](#Comunicação-segura-via-criptografia-assimétrica)
+      - [Comunicação segura via criptografia híbrida](#Comunicação-segura-via-criptografia-híbrida)
+
+-  [Endereços web](#Endereços-web)
+  - [Composição dos endereços web](#Composição-dos-endereços-web)
+  - [Portas](#Portas)
+  - [Recursos](#Recursos)
+
+## O que é HTTP
 > Curso da Alura </br>*HTTP - Entendendo a Internet Por Baixo dos Panos: Aula 01*
 
-**HTTP** (**Hypertext Transfer Protocol**) é um canal de comunicação que une o **cliente** - quem recebe o conteúdo - e o **servidor** - quem envia o conteúdo. 
+O **HTTP** (*Hypertext Transfer Protocol*) é um canal de comunicação que une o **cliente** - quem recebe o conteúdo - e o **servidor** - quem envia o conteúdo.  Sendo assim, ele funciona no **Modelo Cliente-Servidor**, estabelecendo um conjunto de regras para que esta ligação aconteça.
 
-Ou seja: o HTTP funciona no **Modelo Cliente-Servidor**, baseando-se em um conjunto de regras.
+Observações importantes:
 
-HTTP é independente da plataforma de desenvolvimento, sendo aplicável em .Net, PHP, Java, entre outros.
+- As regras de comunicação HTTP estão disponíveis no [RFC¹ HTTP](https://tools.ietf.org/html/rfc2616), mantido pela [The Internet Society](https://www.internetsociety.org/) e pela [Internet Engineering Task Force](https://www.ietf.org/).
+- HTTP é independente da plataforma de desenvolvimento, sendo aplicável em .Net, PHP, Java, entre outros. 
 
-Os detalhes das regras de comunicação HTTP estão disponíveis num RFC (ou *Request For Comments* - documento técnico) mantido pela *The Internet Society* e pela *Internet Engineering Task Force*: [RFC HTTP](https://tools.ietf.org/html/rfc2616).
+- Assim como o HTTP, existem outros protocolos de comunicação. Alguns exemplos são FTP, BitTorrent e SMTP.
+- Existem outros modelos de comunicação além do "cliente-servidor", como o P2P, ou Peer-To-Peer. 
 
-Numa arquitetura completa, funciona assim: 
-1. O cliente faz uma requisição via HTTP;
-2. A requisição vai para o servidor;
-3. O servidor solicita ao banco de dados o conteúdo pedido;
+### Exemplo prático de como funciona o HTTP 
+
+Exemplo do site Alura:
+
+1. O cliente (navegador) faz uma requisição via HTTP;
+2. A requisição vai para o servidor (tomcat);
+3. O servidor solicita ao banco de dados (MySQL) o conteúdo pedido;
 4. O banco de dados responde ao servidor;
 5. O servidor devolve uma resposta ao cliente.
 
- Exemplo da Alura:
-
 ```js
 Cliente  <-- HTTP --> Servidor Java  <---- SQL ----> Banco de dados
-          protocolo de              linguagem para se 
-          comunicação             conectar com o banco
-                                        de dados
+chrome   protocolo de    tomcat       linguagem para      MySQL
+         comunicação                se conectar com o
+                                      banco de dados
 ```
 
-✎ Existem outros modelos de comunicação além do "cliente-servidor", como o P2P, ou Peer-To-Peer. 
-
-✎ E existem outros protocolos de comunicação também, como o BitTorrent, FTP, SMTP...
-
-# HTTP e HTTPS
+### HTTP e HTTPS
 > Curso da Alura </br>*HTTP - Entendendo a Internet Por Baixo dos Panos: Aula 02*
 
-`ALERTA!` O HTTP transporta as requisições do usuário como um texto puro! Se o site acessado pelo usuário for apenas "http" e houver uma solicitação de login e senha, por exemplo, esses dados pessoais trafegarão até o servidor como um texto. 
+O conteúdo do usuário que é transmitido via requisições http trafega como texto puro  por todos os intervalos (modem, roteador, provedor) até chegar no servidor. Se o site acessado for apenas "http" e houver uma solicitação de login e senha, por exemplo, esses dados pessoais trafegarão até o servidor como um texto exposto. Isso pode ser perigoso se for interceptado por um invasor! 
 
-⚠️ Isso pode ser perigoso, pois invasores podem roubar as informações confidenciais nos intervalos por onde elas passam: modem, roteador, provedor...
+Como solução, foi criado o HTTPS - *Hypertext Transfer Protocol Secure*, que usa **criptografia para conectar cliente e servidor**.
 
-Como solução, foi criado o HTTPS - *Hypertext Transfer Protocol Secure*, que usa recursos de **criptografia para conectar cliente e servidor**.
+O protocolo HTTPS nada mais é do que o protocolo HTTP com uma camada adicional de segurança, a camada TLS (*Transport Layer Security*) ou seu antecessor SSL (*Secure Sockets Layer*). Ambos são protocolos também, mas de segurança.
 
-O protocolo *HTTPS nada mais é do que o protocolo HTTP com uma camada adicional de segurança*, a camada TLS (Transport Layer Security) ou seu antecessor SSL (Secure Sockets Layer). Ambos são protocolos também, mas de segurança.
+<img src="./assets/security-amico.gif" width="30%">
 
-Porém, para o navegador realmente confiar nesse site, ele precisa ter uma identidade confirmada: o **certificado digital**, cedido por uma **autoridade certificadora**. Esse certificado tem uma chave pública que vai criptografar todos os dados que o cliente envia para o servidor. Lá do outro lado, no servidor, existe uma outra chave, agora uma chave privada, para descriptografar as informações. 
+#### Como funciona a comunicação segura
 
-obs.: Na verdade quem possui a chave privada é uma aplicação Web que, no exemplo anterior, é a aplicação da Alura. 
+Para fazer a segurança acontecer, precisamos de alguns ajudantes:
 
-Chamamos essa forma de criptografia de **criptografia assimétrica**. Mas ela tem um problema sério: é lenta.
+1. Autoridade certificadora: é uma empresa que confirma que aquele site é realmente seguro, concedendo para ele um certificado digital.
+2. Certificado digital: é o documento cedido pela autoridade certificadora. É nele onde está a chave pública. É possível ver o certificado dos sites e suas informações no navegador, em `Inspecionar > Security`. 
+3. Chave pública: É uma sequência de números e letras que vai criptografar todos os dados que saem do cliente (navegador). Ela é ligada matematicamente com outra chave bem maior, a chave privada.
+4. Chave privada: É uma outra sequência de números e letras que fica no servidor. É ela quem vai descriptografar as informações criptografadas que o cliente mandou. Só funciona com a chave pública certa. Não esqueça: elas são ligadas matematicamente.
 
-Já na segunda forma de criptografia, a **criptografia simétrica**, o cliente e servidor têm a mesma chave. Ela é mais rápida, ok. Mas menos segura.
+##### Comunicação segura via criptografia assimétrica
 
-Então, olha só, o HTTPS usa as duas formas para fazer a comunicação! Assim:
+- Cliente acessa a aplicação (site) segura;
+- O cliente recebe seu certificado contendo a chave pública.
+- O cliente gera o conteúdo e criptografa com a chave pública;
+- O conteúdo trafega via https;
+- Conteúdo chega ao servidor;
+- Conteúdo é descriptografado pela chave privada que já estava no servidor.
 
-- Cliente recebe a chave pública via certificado digital;
-- Servidor continua com sua chave privada;
-- O cliente gera duas chaves simétricas;
-- E envia uma dessas chaves para o servidor, usando a chave assimétrica (já que a chave do servidor ainda é a primeira);
+Mas há um problema na comunicação assimétrica: é lenta! Para mudar este quadro, as duas chaves teriam que ser iguais, o que torna a transação insegura, pois quem tiver a chave pública, tem também a chave privada, certo?
+
+Pensando nisso, a solução foi juntar as criptografias assimétrica e simétrica!
+
+##### Comunicação segura via criptografia híbrida
+
+- Cliente acessa a aplicação (site) segura;
+- O cliente recebe seu certificado contendo a chave pública.
+- O cliente gera duas chaves simétricas e criptografa uma delas com a chave pública;
+- A chave simétrica criptografada trafega via https;
+- A chave chega ao servidor;
+- A chave (que é igual àquela que já está no cliente) é descriptografada pela chave privada que já estava no servidor.
 - Essas duas chaves simétricas serão usadas para todas as requisições seguintes, com os dados criptografados normalmente.
 
-✎ É possível ver o certificado dos sites em `Inspecionar > Security`. Dá pra ver a data de emissão e expiração do certificado, além da autoridade certificadora.
+## Endereços Web
 
-# Endereços Domínios Portas e Recursos
-
-## Endereços e Domínios
+### Composição dos endereços web
 ```js
-<-----------------ENDEREÇO ou URL----------------->
-    https:  // www.alura.com      .br        /
+<---------------------------------ENDEREÇO ou URL-------------------------------->
+    https:  // www.alura.com      .br        			:80   	/curso-front-end.html
 
-<-protocolo-> <--------------domínio-------------->
+<-protocolo-> <--------------domínio--------------><--porta--><------recurso----->
               <-subdomínios->  <-T.L.D.-> <-raiz->
 
 *T.L.D.: Top Level Domain
@@ -133,5 +162,9 @@ Vamos enriquecer este endereço?
 Seguinte: os sites geralmente têm (ou deveriam ter) muito mais que apenas a página inicial. No site da Alura, por exemplo, temos cursos, formações, etc. 
 
 Para renderizar a página de formações, digita-se: `www.alura.com.br/formacoes`. O que vem depois da `/` (a raiz) é chamado de **recurso** e traz todas as outras páginas dentro do site!
+
+
+
+¹ RFC significa *Request For Comments* e são documentos técnicos criados por pessoas e organizações que trabalham com tecnologia. Tem diferentes fontes, desde organizações como IETF ([Internet Engineering Taskforce](https://pt.wikipedia.org/wiki/Internet_Engineering_Task_Force)), IRTF ([Internet Research Taskforce](https://pt.wikipedia.org/wiki/Internet_Research_Task_Force)), ou IAB([Internet Architechture Board](https://pt.wikipedia.org/w/index.php?title=Internet_Architechture_Board&action=edit&redlink=1)), até autores sem vínculos. 
 
 
