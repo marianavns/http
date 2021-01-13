@@ -21,7 +21,6 @@ Este resumo foi baseado em:
 ## Sumário
 
 - [Introdução](#Introdução)
-
 - [O que é HTTP](#O-que-é-HTTP)
 
   - [Exemplo prático de como funciona o HTTP](#Exemplo-prático-de-como-funciona-o-HTTP)
@@ -30,11 +29,19 @@ Este resumo foi baseado em:
     - [Como funciona a comunicação segura](#Como-funciona-a-comunicação-segura)
       - [Comunicação segura via criptografia assimétrica](#Comunicação-segura-via-criptografia-assimétrica)
       - [Comunicação segura via criptografia híbrida](#Comunicação-segura-via-criptografia-híbrida)
-
 -  [Endereços web](#Endereços-web)
   - [Composição dos endereços web](#Composição-dos-endereços-web)
+    - Protocolo
+    - Domínio
+      - Subdomínio
+      - TLD
+      - Raiz
+    - Porta
+    - Recurso
   - [Portas](#Portas)
   - [Recursos](#Recursos)
+- [Requisições HTTP](#Requisições-HTTP)
+- 
 
 ## O que é HTTP
 > Curso da Alura </br>*HTTP - Entendendo a Internet Por Baixo dos Panos: Aula 01*
@@ -112,56 +119,107 @@ Pensando nisso, a solução foi juntar as criptografias assimétrica e simétric
 ## Endereços Web
 
 ### Composição dos endereços web
+
 ```js
 <---------------------------------ENDEREÇO ou URL-------------------------------->
-    https:  // www.alura.com      .br        			:80   	/curso-front-end.html
+    https:  // www.alura         .com        .br     	:80   	/curso-front-end.html
 
 <-protocolo-> <--------------domínio--------------><--porta--><------recurso----->
-              <-subdomínios->  <-T.L.D.-> <-raiz->
+              <--domínio---><-subdomínios-><-raiz->
+    								<-T.L.D.->
 
-*T.L.D.: Top Level Domain
 *U.R.L.: Uniform Resource Locator
+*T.L.D.: Top Level Domain
+*www também é como se fosse um subdomínio, que já está legado, mas que continuamos usando. 
 ```
 
-Os domínios são, na verdade, formas traduzidas do endereço IP, que é uma sequência de números complicada de decorar. 
+💡 Para saber mais:  Toda URL é uma URI - *Uniform Resource Identifier*. URL é apenas uma das formas de identificar alguma coisa, aqui é feito via "endereço". Outra forma é identificar via nome e, neste caso, usamos uma URN - *Uniform Resource Name*. 
 
-Para conhecer o IP de um site, é necessário abrir o prompt de comando e digitar `nslookup <domínio pesquisado>`. Você vai receber uma sequência de números única para cada site.
+A transformação de URL para URI seria:
 
-💡 Para saber mais: Toda URL é uma URI - *Uniform Resource Identifier*. URL é apenas uma das formas de identificar alguma coisa, aqui é feito via "endereço". Outra forma é identificar via nome e, neste caso, usamos uma URN - *Uniform Resource Name*. Em URN, o site Alura ficaria 
+ `cursos.alura/course/introducao-html-css` -> *`urn:cursos:alura:course:introducao-html-css`*
 
-`urn:alura:formacoes:programacao`
+#### Protocolo
 
-### Servidor DNS
+É quem faz a comunicação do cliente com o servidor.
 
-O responsável por *traduzir o domínio digitado pela usuária para o endereçamento IP* é o DNS - Domain Name System, ou sistema de nomes de domínios. 
+#### Domínio
 
-É necessário fazer esta tradução pois a máquina se comunica com o servidor através do número do endereço IP, buscando todos os dados do site digitado.
+É o nome do site, como globo.com ou google.com.
 
-## Portas
+##### Subdomínio
 
-Para haver a comunicação entre o cliente e o servidor, o endereço não é o suficiente. É importante que haja um lugar comum aos dois para receber a requisição e para mandar a resposta. Este lugar é a **porta**.
+##### TLD
+
+##### Raiz
+
+##### O Servidor DNS
+
+Todo domínio, na verdade, é um IP mascarado. Um número de identificação complicado que leva o cliente para vários servidores espalhados pelo mundo, e estes servidores são identificados por números. O cliente **precisa** desse número para chegar no site que você quer.
+
+Mas, por outro lado, imagina quão difícil seria decorar números como 172.217.29.46 e 69.171.250.35 apenas para dois sites: google.com e facebook.com...
+
+Para atender a necessidade do cliente (receber um número de IP certo) e da usuária (não precisar decorar todos os IP's), temos o **servidor DNS**, Domain Name System, ou sistema de nomes de domínios.
+
+É ele o responsável por *traduzir o domínio digitado pela usuária para o número certo do endereço IP*. Assim, o _facebook.com_ digitado é transformado em _69.171.250.35_ para que a requisição comece.
+
+💡 Para saber mais: Para conhecer o endereçamento IP de um site, abra o prompt de comando e digite `nslookup <domínio pesquisado>`. Você vai receber uma sequência de números única para cada site.
+
+#### Porta
+
+Para haver a comunicação entre o cliente e o servidor, o endereço não é o suficiente. É importante que haja um lugar comum a eles para receber a requisição e para mandar a resposta. Este lugar é a **porta**.
 
 Fazendo uma analogia, imagine que você vai visitar uma amiga. Ela te passou apenas o endereço do prédio onde mora, mas, para entrar no prédio, você precisa informar qual apartamento quer visitar. Bem... você não vai entrar lá a menos que tenha o número certo.
 
-![mulher com uma lupa em mãos em frente a prédios](https://i.ibb.co/T09PzQh/House-searching.gif)
+<img src='./assets/searching-friend.gif' width='35%'>
 
 Neste exemplo, o prédio é o servidor e o número do apartamento é o número da porta. Só dá para acessar o servidor com essas duas informações. É assim que a **os protocolos que estão na camada de transporte** funcionam: precisamos do endereço **e** da porta.
 
-O endereço do exemplo acima é, por baixo dos panos, `https://www.alura.com.br:443`. 443 é a porta padrão para qualquer site https, então não precisamos digitá-la todas as vezes. Para sites http, sem a camada de segurança, a porta padrão é a 80. 
+O endereço do exemplo acima é, por baixo dos panos, `https://www.github.com:443`. 443 é a porta padrão para qualquer site https, então não precisamos digitá-la todas as vezes. Para sites http, sem a camada de segurança, a porta padrão é a 80. 
 
-Neste [link](https://pt.wikipedia.org/wiki/Lista_de_portas_dos_protocolos_TCP_e_UDP) estão todas as portas disponíveis para usarmos na comunicação entre um ponto e outro.
+💡 Para saber mais: 
 
-💡 Para saber mais: O HTTP está na **camada de aplicação** dos protocolos de comunicação, ligando processo-a-processo. E ele usa o TCP (*Transmission Control Protocol*) e UDP (*User Datagram Protocol*), que estão numa camada abaixo, a camada de transporte. 
+- Neste [link](https://pt.wikipedia.org/wiki/Lista_de_portas_dos_protocolos_TCP_e_UDP) estão todas as portas disponíveis para usarmos na comunicação entre um ponto e outro.
 
-💡 Todos esses protocolos estão dentro de uma grande lista de protocolos muito úteis para a comunicação entre máquinas: a pilha de protocolos TCP/IP.
+- O HTTP está na **camada de aplicação** dos protocolos de comunicação, ligando processo-a-processo. E ele usa o TCP (*Transmission Control Protocol*) e UDP (*User Datagram Protocol*), que estão numa camada abaixo, a camada de transporte. 
 
-## Recursos
+- Todos esses protocolos estão dentro de uma grande lista de protocolos muito úteis para a comunicação entre máquinas: a pilha de protocolos TCP/IP.
 
-Vamos enriquecer este endereço? 
+#### Recurso
 
-Seguinte: os sites geralmente têm (ou deveriam ter) muito mais que apenas a página inicial. No site da Alura, por exemplo, temos cursos, formações, etc. 
+Os sites geralmente não tem apenas a página inicial. Possuem mais páginas internas, recursos de busca, etc. Como acessar?
 
-Para renderizar a página de formações, digita-se: `www.alura.com.br/formacoes`. O que vem depois da `/` (a raiz) é chamado de **recurso** e traz todas as outras páginas dentro do site!
+Para ter acesso a essas páginas dentro de um site, digitamos mais termos depois da barra de endereço. Exemplo: para minha página no `github.com`, o endereço completo é `github.com/marianavns`. 
+
+O que vem depois da `/`, da **raiz**, é chamado de **recurso** e traz todas as outras páginas dentro do site!
+
+## Requisições HTTP
+
+Fazer uma requisição HTTP é pedir algo ao servidor através do cliente. Quando um usuário digita algum endereço no navegador, ele está fazendo uma requisição via http para acessar aquele site. Quando faz o login e senha no site da faculdade, por exemplo, ele faz a requisição de uma autorização para visualizar o conteúdo das aulas.
+
+### Requisições HTTP são Stateless
+
+A cada requisição, novas informações são enviadas, uma coisa de cada vez. É como enviar cartas: o texto é escrito e enviado pelos Correios e, se tiver alguma outra novidade para contar na carta, não tem como editar - precisa escrever e enviar outra vez para o mesmo destinatário. Vai ver que é por isso que estamos usando tanto o Telegram, certo?
+
+Mas por que adicionamos itens no carrinho do Mercado Livre, fechamos a página e, no dia seguinte, o carrinho ainda está com os itens do dia anterior? A requisição não teria que ser feita outra vez?
+
+É aí que chegamos nos conceitos de sessão e cookies.
+
+### Sessão
+
+Se o carrinho do Mercado Livre não esvaziou de um dia para o outro, quer dizer que o usuário ainda está na mesma **sessão**: tempo logado em uma aplicação. 
+
+Ao fazer o primeiro acesso, são informados e-mail e senha, então o site devolve ao cliente um **token**. A cada nova requisição, como adicionar mais um item no carrinho, o usuário não precisa informar e-mail e senha mais uma vez: o cliente usa o token que já foi informado pelo servidor no primeiro acesso. Este token, junto com muitas outras informações pessoais, fica armazenado num cookie.
+
+#### Cookie
+
+É um arquivo de internet que armazena temporariamente o que o internauta está visitando na rede e outras informações que variam de acordo com cada aplicação, inclusive o token. Assim, o usuário se mantem na sessão, não precisa logar toda hora e não perde os itens selecionados para a compra. 
+
+Ele garante a persistência dos dados e a manutenção do estado. Nada mais é do que um pequeno arquivo de texto armazenado na máquina do usuário.
+
+Ele sempre fica associado a um único domínio, e um domínio pode ter vários cookies para o mesmo usuário.
+
+💡 Para saber mais:  Para visualizar os cookies de um site no Chrome, é este o caminho: **Configurações -> Privacidade -> Configurações de conteúdo... -> Todos os cookies e dados de site... -> Pesquisar o site**
 
 
 
